@@ -1,10 +1,12 @@
 import socket
 import os
 import noise
+import ssl
 
-sock = socket.socket()
-sock.bind(('', 9090))
+sock = ssl.wrap_socket(socket.socket(), 'server.key', 'server.crt', True)
+sock.bind( ('localhost', 9090) )
 sock.listen(1)
+
 conn, addr = sock.accept()
 print('Client connected: ', addr[0])
 while True:
