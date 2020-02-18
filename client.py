@@ -13,8 +13,8 @@ while True:
     if k[0:4] == 'get ':
         print('Searching for file...')
         sock.send(k.encode())
-        data = sock.recv(1024).decode()
-        size = sock.recv(1024).decode('utf-8')
+        data = sock.recv(2048).decode()
+        size = sock.recv(2048).decode('utf-8')
         if data == 'No such file!':
             print(data)
         else:
