@@ -4,15 +4,14 @@ import cv2
 def add(image_name, mode):
     image_name.rfind('.')
     im = cv2.imread(image_name)
-    row, col, ch = im.shape
     s_vs_p = 0.5
-    amount = 0.004
+    amount = 0.03
     out = np.copy(im)
     if mode == "salt":
         # Salt mode
         num_salt = np.ceil(amount * im.size * s_vs_p)
-        coords = [np.random.randint(0, i - 1, int(num_salt))   for i in im.shape]
-        out[coords] = 1
+        coords = [np.random.randint(0, i - 1, int(num_salt))  for i in im.shape]
+        out[coords] = 255
     elif mode == "pepper":
         num_pepper = np.ceil(amount * im.size * (1. - s_vs_p))
         coords = [np.random.randint(0, i - 1, int(num_pepper))

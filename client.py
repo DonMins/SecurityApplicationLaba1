@@ -13,23 +13,28 @@ while True:
     if k[0:4] == 'get ':
         print('Searching for file...')
         sock.send(k.encode())
+        data = "f"
         data = sock.recv(2048).decode()
-        size = sock.recv(2048).decode('utf-8')
+        size = sock.recv(2048).decode('UTF-8')
         if data == 'No such file!':
             print(data)
         else:
             print(data)
             new_name = 'downloaded_'+k[4:len(k)]
             downloaded_file = open(new_name,'wb')
-            # data = sock.recv(4096000)
-            data = sock.recv(int(size))
-            downloaded_file.write(data)
+            data2 = bytearray()
+            while len(data2) != int(size):
+                data2 += sock.recv(int(size))
+
+            downloaded_file.write(data2)
             downloaded_file.close()
-            median = cv2.medianBlur(cv2.imread(new_name), 1)
+            median = cv2.medianBlur(cv2.imread(new_name), 5)
             cv2.imwrite(new_name, median)
             cv2.imshow('Downloaded image', median)
             print('File downloaded successfully!')
             cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            cv2.waitKey(1)
         print('')
     else:
         if k == 'exit':
