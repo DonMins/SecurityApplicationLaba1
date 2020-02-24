@@ -1,14 +1,16 @@
 import socket
 import ssl
 import cv2
-
+import os
 print('Подключение к серверу ...')
 sock = ssl.wrap_socket(socket.socket())
 sock.connect( ('localhost', 9090) )
 print('Подключен')
 
 while True:
-    print('Type "get" and image name to download image file...')
+    print('Введите название файла из предложенного списка.')
+    files = os.listdir("image")
+    print(files)
     k = input()
     if k[0:4] == 'get ':
         print('Searching for file...')

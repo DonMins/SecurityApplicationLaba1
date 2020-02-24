@@ -15,7 +15,7 @@ while True:
         break
     request = data.decode()
     print(addr[0], ' request - ' + request)
-    fname = request[4:len(request)]
+    fname = request[len(request)]
     try:
         fname = noise.add(fname, 'salt')
         file = open(fname, 'rb')
@@ -25,8 +25,8 @@ while True:
         conn.send(bytes(str(size), 'UTF-8'))
         conn.sendall(file.read())
         file.close()
-       #os.remove(fname)
     except FileNotFoundError:
         conn.send('No such file!'.encode())
-
-conn.close()
+    except (ConnectionAbortedError, ConnectionResetError):
+        print("fdg")
+        conn.close()
