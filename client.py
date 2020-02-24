@@ -8,17 +8,16 @@ sock.connect( ('localhost', 9090) )
 print('Подключен')
 
 while True:
-    print('Введите название файла из предложенного списка.')
+    print('Введите get и название файла из предложенного списка. Или exit для выхода')
     files = os.listdir("image")
     print(files)
     k = input()
     if k[0:4] == 'get ':
-        print('Searching for file...')
+        print('Поиск файла...')
         sock.send(k.encode())
-        data = "f"
         data = sock.recv(2048).decode()
         size = sock.recv(2048).decode('UTF-8')
-        if data == 'No such file!':
+        if data == 'Файл не найден!':
             print(data)
         else:
             print(data)
@@ -27,13 +26,13 @@ while True:
             data2 = bytearray()
             while len(data2) != int(size):
                 data2 += sock.recv(int(size))
-
             downloaded_file.write(data2)
+
             downloaded_file.close()
             median = cv2.medianBlur(cv2.imread(new_name), 5)
             cv2.imwrite(new_name, median)
-            cv2.imshow('Downloaded image', median)
-            print('File downloaded successfully!')
+            cv2.imshow('Загруженное изображение ', median)
+            print('Файл скачен успешно!')
             cv2.waitKey(0)
             cv2.destroyAllWindows()
             cv2.waitKey(1)
@@ -41,7 +40,7 @@ while True:
     else:
         if k == 'exit':
             sock.close()
-            print('Closing connection...')
+            print('Закрытие соединения...')
             break
-        print('Invalid input')
-print('Shutting down...')
+        print('Неверный ввод')
+print('Выключение...')
